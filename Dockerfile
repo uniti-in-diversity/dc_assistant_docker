@@ -1,4 +1,4 @@
-FROM 3.7-buster
+FROM python:3.7-buster
 RUN set -ex apk add --no-cache postgresql-client postgresql-dev build-base nano ca-certificates ttf-ubuntu-font-family gunicorn git
 
 RUN git clone https://github.com/uniti-in-diversity/dc_assistant.git /tmp/app && mkdir -p /app/dc_assistant && cp -r /tmp/app/dc_assistant /app/dc_assistant/dc_assistant
