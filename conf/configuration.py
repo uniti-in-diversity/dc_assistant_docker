@@ -11,6 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(' ')
 
 DATABASE = {
+    'ENGINE': 'django.db.backends.postgresql',                      # Database engine
     'NAME': os.environ.get('DB_NAME', 'dcassistant'),               # Database name
     'USER': os.environ.get('DB_USER', 'dcassistant'),               # PostgreSQL username
     'PASSWORD': os.environ.get('DB_PASSWORD', ''),                  # PostgreSQL password
