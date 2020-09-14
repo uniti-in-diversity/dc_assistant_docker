@@ -3,9 +3,6 @@
 #stop if errors
 set -e
 
-#run as non-root users
-umask 775
-
 #try to connect to DB
 DB_WAIT_TIMEOUT=${DB_WAIT_TIMEOUT-3}
 MAX_DB_WAIT_TIME=${MAX_DB_WAIT_TIME-30}

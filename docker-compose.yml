@@ -13,17 +13,19 @@ services:
     env_file: env/dcassistant.env
     depends_on:
       - db
+    expose:
+      - "8001"
     volumes:
-      - ./static:/app/dc_assistant/dc_assistant/static:ro
+      - ./static:/app/dc_assistant/dc_assistant/static:z
       - ./media:/app/dc_assistant/dc_assistant/media:z
 
   nginx:
-    command: nginx -c /etc/nginx/nginx_dcassistant.conf
+    command: nginx -c /etc/dc_assistant_nginx/nginx_dcassistant.conf
     image: nginx:1.17-alpine
     depends_on:
       - app
     ports:
-      - 8080
+      - "8080:8080"
     volumes:
-      - ./static:/app/dc_assistant/dc_assistant/static:ro
-
+      - ./static:/app/dc_assistant/dc_assistant/static:z
+      - ./nginx:/etc/dc_assistant_nginx:z

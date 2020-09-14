@@ -4,9 +4,8 @@ RUN set -ex apk add --no-cache postgresql-client postgresql-dev build-base nano 
 RUN git clone https://github.com/uniti-in-diversity/dc_assistant.git /tmp/app && mkdir -p /app/dc_assistant && cp -r /tmp/app/dc_assistant /app/dc_assistant/dc_assistant
 RUN pip install --no-cache-dir --no-warn-script-location -r /tmp/app/requirements.txt
 RUN pip install --no-cache-dir --no-warn-script-location gunicorn
-RUN rm -R /tmp/app && chmod -R 775 /app/dc_assistant
+RUN rm -R /tmp/app && chmod -R 775 /app
 
-COPY ./conf/nginx_dcassistant.conf /etc/nginx/nginx_dcassistant.conf
 COPY ./conf/configuration.py /app/dc_assistant/dc_assistant/dc_assistant/configuration.py
 COPY ./conf/gunicorn_config.py /app/dc_assistant/gunicorn_config.py
 COPY ./docker-entrypoint.sh /app/dc_assistant/docker-entrypoint.sh
