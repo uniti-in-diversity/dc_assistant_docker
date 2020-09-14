@@ -4,13 +4,15 @@
 set -e
 
 #run as non-root users
-umask 002
+umask 775
 
 #try to connect to DB
 DB_WAIT_TIMEOUT=${DB_WAIT_TIMEOUT-3}
 MAX_DB_WAIT_TIME=${MAX_DB_WAIT_TIME-30}
 CUR_DB_WAIT_TIME=0
-while ! ./manage.py migrate 2>&1 && [ "${CUR_DB_WAIT_TIME}" -lt "${MAX_DB_WAIT_TIME}" ]; do
+
+./dc_assistant/manage.py makemigrations
+while ! ./dc_assistant/manage.py migrate 2>&1 && [ "${CUR_DB_WAIT_TIME}" -lt "${MAX_DB_WAIT_TIME}" ]; do
   echo "⏳ Waiting on DB... (${CUR_DB_WAIT_TIME}s / ${MAX_DB_WAIT_TIME}s)"
   sleep "${DB_WAIT_TIMEOUT}"
   CUR_DB_WAIT_TIME=$(( CUR_DB_WAIT_TIME + DB_WAIT_TIMEOUT ))
@@ -20,8 +22,7 @@ if [ "${CUR_DB_WAIT_TIME}" -ge "${MAX_DB_WAIT_TIME}" ]; then
   exit 1
 fi
 
-# Create Superuser if required
-
+# Create Superuser
 if [ -z ${SUPERUSER_NAME} ]; then
 SUPERUSER_NAME='admin'
 fi
@@ -32,7 +33,7 @@ if [ -z ${SUPERUSER_PASSWORD} ]; then
 SUPERUSER_PASSWORD='admin'
 fi
 
-  ./manage.py shell --interface python << END
+  ./dc_assistant/manage.py shell --interface python << END
 from django.contrib.auth.models import User
 if not User.objects.filter(username='${SUPERUSER_NAME}'):
     u=User.objects.create_superuser('${SUPERUSER_NAME}', '${SUPERUSER_EMAIL}', '${SUPERUSER_PASSWORD}')
@@ -40,7 +41,7 @@ END
 
 echo "💡 Superuser Username: ${SUPERUSER_NAME}, E-Mail: ${SUPERUSER_EMAIL}"
 
-./manage.py collectstatic --no-input
+#./dc_assistant/manage.py collectstatic --no-input
 
 echo "✅ Initialisation is done."
 

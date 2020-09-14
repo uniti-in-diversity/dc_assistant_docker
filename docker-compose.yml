@@ -10,14 +10,13 @@ services:
   app:
     build: .
     restart: always
-    user: '101'
     env_file: env/dcassistant.env
     depends_on:
       - db
     volumes:
       - ./static:/app/dc_assistant/dc_assistant/static:ro
       - ./media:/app/dc_assistant/dc_assistant/media:z
-      
+
   nginx:
     command: nginx -c /etc/nginx/nginx_dcassistant.conf
     image: nginx:1.17-alpine
