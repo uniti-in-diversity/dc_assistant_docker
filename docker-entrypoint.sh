@@ -41,7 +41,7 @@ END
 
 echo "💡 Superuser Username: ${SUPERUSER_NAME}, E-Mail: ${SUPERUSER_EMAIL}"
 
-#./dc_assistant/manage.py collectstatic --no-input
+./dc_assistant/manage.py collectstatic --no-input
 
 echo "✅ Initialisation is done."
 
